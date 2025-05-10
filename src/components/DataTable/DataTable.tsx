@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -10,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import TablePagination from './TablePagination';
+} from "@/components/ui/table";
+import TablePagination from "./TablePagination";
 
 export interface Column<T> {
   header: string;
@@ -20,7 +19,7 @@ export interface Column<T> {
   sortable?: boolean;
 }
 
-export type SortDirection = 'asc' | 'desc' | null;
+export type SortDirection = "asc" | "desc" | null;
 
 export interface DataTableProps<T> {
   data: T[];
@@ -43,13 +42,19 @@ function DataTable<T>({
 
   const handleSort = (column: keyof T) => {
     if (sortColumn === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : sortDirection === 'desc' ? null : 'asc');
-      if (sortDirection === 'desc') {
+      setSortDirection(
+        sortDirection === "asc"
+          ? "desc"
+          : sortDirection === "desc"
+            ? null
+            : "asc",
+      );
+      if (sortDirection === "desc") {
         setSortColumn(null);
       }
     } else {
       setSortColumn(column);
-      setSortDirection('asc');
+      setSortDirection("asc");
     }
   };
 
@@ -61,33 +66,42 @@ function DataTable<T>({
       const bValue = b[sortColumn];
 
       if (aValue === bValue) return 0;
-      
+
       if (aValue === null || aValue === undefined) return 1;
       if (bValue === null || bValue === undefined) return -1;
 
-      const comparison = String(aValue).localeCompare(String(bValue), undefined, { numeric: true });
-      return sortDirection === 'asc' ? comparison : -comparison;
+      const comparison = String(aValue).localeCompare(
+        String(bValue),
+        undefined,
+        {
+          numeric: true,
+        },
+      );
+      return sortDirection === "asc" ? comparison : -comparison;
     });
   }, [data, sortColumn, sortDirection]);
 
-  // Implement pagination
   const totalPages = Math.ceil(sortedData.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentData = sortedData.slice(startIndex, endIndex);
 
   const getSortIcon = (column: keyof T) => {
-    if (sortColumn !== column) return <ChevronsUpDown className="ml-2 h-4 w-4" />;
-    if (sortDirection === 'asc') return <ChevronUp className="ml-2 h-4 w-4" />;
-    if (sortDirection === 'desc') return <ChevronDown className="ml-2 h-4 w-4" />;
+    if (sortColumn !== column)
+      return <ChevronsUpDown className="ml-2 h-4 w-4" />;
+    if (sortDirection === "asc") return <ChevronUp className="ml-2 h-4 w-4" />;
+    if (sortDirection === "desc")
+      return <ChevronDown className="ml-2 h-4 w-4" />;
     return <ChevronsUpDown className="ml-2 h-4 w-4" />;
   };
 
   return (
-    <Card className={`${className} w-full shadow-md overflow-hidden`}>
+    <Card
+      className={`${className} w-full border border-gray-200 shadow-sm overflow-hidden rounded-md`}
+    >
       {title && (
-        <div className="px-6 py-4 bg-primary/5 border-b">
-          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <div className="px-6 py-4 bg-primary/10 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-primary-900">{title}</h3>
         </div>
       )}
       <div className="overflow-x-auto">
@@ -95,12 +109,15 @@ function DataTable<T>({
           <TableHeader>
             <TableRow>
               {columns.map((column, index) => (
-                <TableHead key={index} className="bg-muted/50">
+                <TableHead
+                  key={index}
+                  className="bg-gray-50 text-primary-800 font-medium"
+                >
                   {column.sortable !== false ? (
                     <Button
                       variant="ghost"
                       onClick={() => handleSort(column.accessorKey)}
-                      className="h-auto p-0 font-semibold hover:bg-transparent flex items-center"
+                      className="h-auto p-0 font-semibold hover:bg-transparent hover:text-primary-600 flex items-center"
                     >
                       {column.header}
                       {getSortIcon(column.accessorKey)}
@@ -124,13 +141,15 @@ function DataTable<T>({
               </TableRow>
             ) : (
               currentData.map((row, rowIndex) => (
-                <TableRow 
+                <TableRow
                   key={rowIndex}
-                  className="hover:bg-muted/30 transition-colors"
+                  className="hover:bg-primary-50 transition-colors border-b border-gray-100"
                 >
                   {columns.map((column, colIndex) => (
-                    <TableCell key={colIndex}>
-                      {column.cell ? column.cell(row) : String(row[column.accessorKey] ?? '')}
+                    <TableCell key={colIndex} className="py-3">
+                      {column.cell
+                        ? column.cell(row)
+                        : String(row[column.accessorKey] ?? "")}
                     </TableCell>
                   ))}
                 </TableRow>

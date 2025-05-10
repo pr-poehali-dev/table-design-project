@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 import {
   Pagination,
   PaginationContent,
@@ -7,8 +6,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
 
 interface TablePaginationProps {
   currentPage: number;
@@ -23,24 +22,38 @@ const TablePagination: React.FC<TablePaginationProps> = ({
 }) => {
   // Определяем, какие страницы показывать
   const getPageItems = () => {
-    const items: (number | 'ellipsis')[] = [];
-    
+    const items: (number | "ellipsis")[] = [];
+
     // Всегда показываем первую страницу
     items.push(1);
-    
+
     // Если больше 7 страниц, используем эллипсис
     if (totalPages > 7) {
       // Текущая страница близка к началу
       if (currentPage <= 4) {
-        items.push(2, 3, 4, 5, 'ellipsis', totalPages);
-      } 
+        items.push(2, 3, 4, 5, "ellipsis", totalPages);
+      }
       // Текущая страница близка к концу
       else if (currentPage >= totalPages - 3) {
-        items.push('ellipsis', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-      } 
+        items.push(
+          "ellipsis",
+          totalPages - 4,
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        );
+      }
       // Текущая страница где-то в середине
       else {
-        items.push('ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages);
+        items.push(
+          "ellipsis",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "ellipsis",
+          totalPages,
+        );
       }
     } else {
       // Если меньше 8 страниц, показываем все
@@ -48,17 +61,17 @@ const TablePagination: React.FC<TablePaginationProps> = ({
         items.push(i);
       }
     }
-    
+
     return items;
   };
 
   // Простая проверка для предотвращения рендеринга пагинации с 1 страницей
   if (totalPages <= 1) return null;
-  
+
   const pageItems = getPageItems();
 
   return (
-    <div className="py-4 border-t">
+    <div className="py-4 px-2 border-t border-gray-200 bg-gray-50">
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -67,7 +80,7 @@ const TablePagination: React.FC<TablePaginationProps> = ({
               size="sm"
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 text-primary-700 hover:text-primary-900 hover:bg-primary-50"
             >
               <PaginationPrevious />
             </Button>
@@ -75,8 +88,8 @@ const TablePagination: React.FC<TablePaginationProps> = ({
 
           {pageItems.map((item, index) => (
             <PaginationItem key={index}>
-              {item === 'ellipsis' ? (
-                <span className="px-4">...</span>
+              {item === "ellipsis" ? (
+                <span className="px-4 text-gray-500">...</span>
               ) : (
                 <PaginationLink
                   href="#"
@@ -85,6 +98,11 @@ const TablePagination: React.FC<TablePaginationProps> = ({
                     onPageChange(item as number);
                   }}
                   isActive={currentPage === item}
+                  className={
+                    currentPage === item
+                      ? "bg-primary text-white hover:bg-primary-600"
+                      : "text-gray-700 hover:bg-primary-50"
+                  }
                 >
                   {item}
                 </PaginationLink>
@@ -98,7 +116,7 @@ const TablePagination: React.FC<TablePaginationProps> = ({
               size="sm"
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 text-primary-700 hover:text-primary-900 hover:bg-primary-50"
             >
               <PaginationNext />
             </Button>
