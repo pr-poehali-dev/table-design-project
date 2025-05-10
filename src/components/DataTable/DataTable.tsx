@@ -29,13 +29,13 @@ export interface DataTableProps<T> {
   className?: string;
 }
 
-function DataTable<T>({
+const DataTable = <T extends {}>({
   data,
   columns,
   title,
   pageSize = 10,
   className,
-}: DataTableProps<T>) {
+}: DataTableProps<T>) => {
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -111,19 +111,19 @@ function DataTable<T>({
               {columns.map((column, index) => (
                 <TableHead
                   key={index}
-                  className="bg-gray-50 text-[#337ab7] font-medium"
+                  className="bg-gray-50 text-black font-medium"
                 >
                   {column.sortable !== false ? (
                     <Button
                       variant="ghost"
                       onClick={() => handleSort(column.accessorKey)}
-                      className="h-auto p-0 font-semibold text-[#337ab7] hover:bg-transparent hover:text-[#337ab7]/80 flex items-center"
+                      className="h-auto p-0 font-semibold text-black hover:bg-transparent hover:text-gray-800 flex items-center"
                     >
                       {column.header}
                       {getSortIcon(column.accessorKey)}
                     </Button>
                   ) : (
-                    <span className="font-semibold text-[#337ab7]">
+                    <span className="font-semibold text-black">
                       {column.header}
                     </span>
                   )}
@@ -148,7 +148,7 @@ function DataTable<T>({
                   className="hover:bg-primary-50 transition-colors border-b border-gray-100"
                 >
                   {columns.map((column, colIndex) => (
-                    <TableCell key={colIndex} className="py-3">
+                    <TableCell key={colIndex} className="py-3 text-[#337ab7]">
                       {column.cell
                         ? column.cell(row)
                         : String(row[column.accessorKey] ?? "")}
@@ -169,6 +169,6 @@ function DataTable<T>({
       )}
     </Card>
   );
-}
+};
 
 export default DataTable;
