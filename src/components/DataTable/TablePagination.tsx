@@ -89,7 +89,7 @@ const TablePagination: React.FC<TablePaginationProps> = ({
           {pageItems.map((item, index) => (
             <PaginationItem key={index}>
               {item === "ellipsis" ? (
-                <span className="px-4 text-gray-500">...</span>
+                <span className="px-4 text-[#337ab7]/70">...</span>
               ) : (
                 <PaginationLink
                   href="#"

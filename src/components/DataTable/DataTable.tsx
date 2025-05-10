@@ -111,19 +111,21 @@ function DataTable<T>({
               {columns.map((column, index) => (
                 <TableHead
                   key={index}
-                  className="bg-gray-50 text-primary-800 font-medium"
+                  className="bg-gray-50 text-[#337ab7] font-medium"
                 >
                   {column.sortable !== false ? (
                     <Button
                       variant="ghost"
                       onClick={() => handleSort(column.accessorKey)}
-                      className="h-auto p-0 font-semibold hover:bg-transparent hover:text-primary-600 flex items-center"
+                      className="h-auto p-0 font-semibold text-[#337ab7] hover:bg-transparent hover:text-[#337ab7]/80 flex items-center"
                     >
                       {column.header}
                       {getSortIcon(column.accessorKey)}
                     </Button>
                   ) : (
-                    <span className="font-semibold">{column.header}</span>
+                    <span className="font-semibold text-[#337ab7]">
+                      {column.header}
+                    </span>
                   )}
                 </TableHead>
               ))}
